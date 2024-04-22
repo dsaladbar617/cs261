@@ -52,7 +52,12 @@ def reverse(arr: StaticArray) -> None:
     """
     TODO: Write this implementation
     """
-    pass
+    for i in range(arr.length()):
+        # end = arr.length() - 1
+        prev = arr.get(i)
+        # arr.set(i, arr.get(end))
+        arr.set(end, prev)
+    return
 
 # ------------------- PROBLEM 4 - ROTATE ------------------------------------
 
