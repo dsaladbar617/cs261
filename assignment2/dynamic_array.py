@@ -257,23 +257,52 @@ def chunk(arr: DynamicArray) -> "DynamicArray":
     """
     TODO: Write this implementation
     """
-    breaks = DynamicArray()
+    chunks = DynamicArray()
+    current_chunk = DynamicArray()
 
-    for i in range(1, arr.length()):
-        print(arr.get_at_index(i), arr.get_at_index(i - 1))
-        if arr.get_at_index(i) < arr.get_at_index(i - 1):
-            breaks.append(i)
+    for i in range(arr.length()):
+        if current_chunk.length() == 0 or arr.get_at_index(i) >= current_chunk.get_at_index(current_chunk.length() - 1):
+            current_chunk.append(arr.get_at_index(i))
+        else:
+            chunks.append(current_chunk)
+            current_chunk = DynamicArray([arr.get_at_index(i)])
 
-    breaks.print_da_variables()
 
-    pass
+    if current_chunk.length() > 0:
+        chunks.append(current_chunk)
+
+    return chunks
 
 
 def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     """
     TODO: Write this implementation
     """
-    pass
+    mode = DynamicArray()
+    most_frequent = 1
+    current_frequency = 1
+    prev = arr.get_at_index(0)
+
+    for i in range(1, arr.length()):
+        current_element = arr.get_at_index(i)
+        if prev == current_element:
+            current_frequency += 1
+        else:
+            if current_frequency > most_frequent:
+                mode = DynamicArray([prev])
+                most_frequent = current_frequency
+            elif current_frequency == most_frequent:
+                mode.append(prev)
+            current_frequency = 1
+        prev = current_element
+
+    if current_frequency > most_frequent:
+        mode = DynamicArray([prev])
+        most_frequent = current_frequency
+    elif current_frequency == most_frequent:
+        mode.append(prev)
+
+    return (mode, most_frequent)
 
 
 # ------------------- BASIC TESTING -----------------------------------------
