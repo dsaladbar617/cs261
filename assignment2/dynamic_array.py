@@ -1,9 +1,9 @@
-# Name:
-# OSU Email:
+# Name: Daniel Salazar
+# OSU Email: salazdan@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
+# Assignment: 2
+# Due Date: Apr 29, 2024
+# Description: Implementing a dynamic array class
 
 
 from static_array import StaticArray
@@ -133,7 +133,7 @@ class DynamicArray:
 
     def resize(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Resize the array to the new capacity
         """
         if new_capacity < self._size or new_capacity <= 0:
             return
@@ -149,7 +149,7 @@ class DynamicArray:
 
     def append(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Add a new value to the end of the array
         """
         if self._size >= self._capacity:
             self.resize(self._capacity * 2)
@@ -160,7 +160,7 @@ class DynamicArray:
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
-        TODO: Write this implementation
+        Insert a new value at the given index
         """
         if self._size >= self._capacity:
             self.resize(self._capacity * 2)
@@ -180,8 +180,11 @@ class DynamicArray:
 
     def remove_at_index(self, index: int) -> None:
         """
-        TODO: Write this implementation
+        Remove the value at the given index
         """
+        if index < 0 or index >= self._size:
+            raise DynamicArrayException
+
         if self._size < self._capacity * 0.25 and self._size != 10:
             new_capacity = self._size * 2
             if new_capacity < 10 and self._capacity > 10:
@@ -202,11 +205,11 @@ class DynamicArray:
 
     def slice(self, start_index: int, size: int) -> "DynamicArray":
         """
-        TODO: Write this implementation
+        Return a new dynamic array that is a slice of the current array
         """
         new_arr = DynamicArray()
 
-        if start_index < 0 or start_index > self._size or size > self._size or size + start_index > self._size or size < 0:
+        if start_index < 0 or start_index >= self._size or size > self._size or size + start_index > self._size or size < 0:
             raise DynamicArrayException
 
         for i in range(start_index, start_index + size):
@@ -216,7 +219,7 @@ class DynamicArray:
 
     def map(self, map_func) -> "DynamicArray":
         """
-        TODO: Write this implementation
+        Apply the map_func to each element in the array
         """
         new_arr = DynamicArray()
         for i in range(self._size):
@@ -226,7 +229,7 @@ class DynamicArray:
 
     def filter(self, filter_func) -> "DynamicArray":
         """
-        TODO: Write this implementation
+        Filter the array based on the filter_func
         """
         new_arr = DynamicArray()
 
@@ -238,7 +241,7 @@ class DynamicArray:
 
     def reduce(self, reduce_func, initializer=None) -> object:
         """
-        TODO: Write this implementation
+        Reduce the array based on the reduce_func
         """
         if initializer == None:
             if self._size != 0:
@@ -255,7 +258,7 @@ class DynamicArray:
 
 def chunk(arr: DynamicArray) -> "DynamicArray":
     """
-    TODO: Write this implementation
+    Split the array into chunks of increasing values
     """
     chunks = DynamicArray()
     current_chunk = DynamicArray()
@@ -265,7 +268,8 @@ def chunk(arr: DynamicArray) -> "DynamicArray":
             current_chunk.append(arr.get_at_index(i))
         else:
             chunks.append(current_chunk)
-            current_chunk = DynamicArray([arr.get_at_index(i)])
+            current_chunk = DynamicArray()
+            current_chunk.append(arr.get_at_index(i))
 
 
     if current_chunk.length() > 0:
@@ -276,7 +280,7 @@ def chunk(arr: DynamicArray) -> "DynamicArray":
 
 def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     """
-    TODO: Write this implementation
+    Find the mode of the array
     """
     mode = DynamicArray()
     most_frequent = 1
@@ -289,7 +293,8 @@ def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
             current_frequency += 1
         else:
             if current_frequency > most_frequent:
-                mode = DynamicArray([prev])
+                mode = DynamicArray()
+                mode.append(prev)
                 most_frequent = current_frequency
             elif current_frequency == most_frequent:
                 mode.append(prev)
@@ -297,7 +302,8 @@ def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
         prev = current_element
 
     if current_frequency > most_frequent:
-        mode = DynamicArray([prev])
+        mode = DynamicArray()
+        mode.append(prev)
         most_frequent = current_frequency
     elif current_frequency == most_frequent:
         mode.append(prev)

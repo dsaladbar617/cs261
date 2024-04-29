@@ -1,9 +1,9 @@
-# Name:
-# OSU Email:
+# Name: Daniel Salazar
+# OSU Email: salazdan@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
+# Assignment: 2
+# Due Date: Apr 29, 2024
+# Description: Implementing a bag class
 
 
 from dynamic_array import *
@@ -44,45 +44,100 @@ class Bag:
 
     def add(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        This method adds a new value to the bag
         """
-        pass
+        # if self._da.get_capacity() == self._da.length():
+        self._da.append(value)
+
+        return
 
     def remove(self, value: object) -> bool:
         """
-        TODO: Write this implementation
+        This method removes the first instance of the value from the bag
         """
-        pass
+        removed = False
+        for i in range(self._da.length()):
+            if value == self._da.get_at_index(i):
+                self._da.remove_at_index(i)
+                removed = True
+                break
+        return removed
 
     def count(self, value: object) -> int:
         """
-        TODO: Write this implementation
+        This method counts the number of times the value appears in the bag
         """
-        pass
+        count = 0
+
+        for i in range(self._da.length()):
+            if value == self._da.get_at_index(i):
+                count += 1
+        return count
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        This method clears the bag of all values
         """
-        pass
+        self._da = DynamicArray()
+        return
 
     def equal(self, second_bag: "Bag") -> bool:
         """
-        TODO: Write this implementation
+        This method checks if two bags are equal
         """
-        pass
+        match = False
+        match_elements = self._da.length()
+        second_match_elements = second_bag._da.length()
+        if self._da.length() == 0 and second_bag.size() == 0:
+            match = True
+
+        if self._da.length() != second_bag._da.length():
+            return match
+
+        for i in range(self._da.length()):
+            current_match = False
+            for j in range(second_bag.size()):
+                if self._da.get_at_index(i) == second_bag._da.get_at_index(j):
+                    match_elements -= 1
+                    current_match = True
+                if second_bag._da.get_at_index(i) == self._da.get_at_index(j):
+                   second_match_elements -= 1
+                   current_match = True
+
+                if j == second_bag._da.length() - 1 and current_match == False:
+                    match = False
+                    break
+
+                if match_elements == 0 and second_match_elements == 0:
+                    match = True
+            else:
+                continue
+
+            break
+
+        return match
 
     def __iter__(self):
         """
-        TODO: Write this implementation
+        This method returns an iterator object
         """
-        pass
+
+        self._index = 0
+
+        return self
 
     def __next__(self):
         """
-        TODO: Write this implementation
+        This method returns the next value in the bag
         """
-        pass
+        try:
+            value = self._da[self._index]
+        except DynamicArrayException:
+            raise StopIteration
+
+        self._index += 1
+
+        return value
 
 
 # ------------------- BASIC TESTING -----------------------------------------
