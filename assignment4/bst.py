@@ -214,9 +214,11 @@ class BST:
 
         def find_min(node):
             current = node
+            parent = None
             while current.left is not None:
+                parent = current
                 current = current.left
-            return  current
+            return current, parent
 
         def num_of_children(node):
             if node.left == None and node.right == None:
@@ -249,44 +251,15 @@ class BST:
                     else:
                         parentNode.left = currentNode.left
                 elif num_of_children(currentNode) == 2:
-                    min_current = find_min(currentNode.right)
-                    min_current.left = currentNode.left
-                    parentNode.right = min_current
-                    # if value > parentNode.value:
-                    #     parentNode.right = currentNode.right
-                    # else:
-                    #     parentNode.left = currentNode.left
+                    min_current, min_parent = find_min(currentNode.right)
+                    if min_parent == None:
+                        if min_current.value < parentNode.value:
+                            min_current.left = parentNode.left
+                            parentNode.left = min_current
 
-        print("Parent: ",parentNode, "Current: ", currentNode)
+                    min_current.left = currentNode.left
 
         return removed
-
-
-        # def remove_node(node, value):
-        #     if node == None:
-        #         return node, False
-        #     if value < node.value:
-        #         node.left, removed = remove_node(node.left, value)
-        #     elif value > node.value:
-        #         node.right, removed = remove_node(node.right, value)
-        #     else:
-        #         removed = True
-        #         if node.left == None:
-        #             temp = node.right
-        #             node = None
-        #             return temp, removed
-        #         elif node.right == None:
-        #             temp = node.left
-        #             node = None
-        #             return temp
-        #         temp = find_min(node.right)
-        #         node.value = temp.value
-        #         node.right, _ = remove_node(node.right, temp.value)
-        #     return node, removed
-
-        # self._root, removed = remove_node(self._root, value)
-        # return removed
-
     # Consider implementing methods that handle different removal scenarios; #
     # you may find that you're able to use some of them in the AVL.          #
     # Remove these comments.                                                 #
@@ -319,37 +292,73 @@ class BST:
         """
         TODO: Write your implementation
         """
-        pass
+        current = self._root
+        found = False
+        while current != None:
+            if current.value == value:
+                found = True
+                break
+            if value < current.value:
+                current = current.left
+            else:
+                current = current.right
+
+        return found
 
     def inorder_traversal(self) -> Queue:
         """
         TODO: Write your implementation
         """
-        pass
+        current = self._root
+        queue = Queue()
+
+        def inOrder(node):
+            if node is not None:
+                inOrder(node.left)
+                queue.enqueue(node.value)
+                inOrder(node.right)
+
+        inOrder(current)
+        # while current != None:
+        #     if current.left != None:
+        #         current.
+        return queue
 
     def find_min(self) -> object:
         """
         TODO: Write your implementation
         """
+        current = self._root
+            # parent = None
+        while current.left is not None:
+            # parent = current
+            current = current.left
+        return current.value
         pass
 
     def find_max(self) -> object:
         """
         TODO: Write your implementation
         """
-        pass
+        current = self._root
+        while current.right is not None:
+            current = current.right
+        return current.value
 
     def is_empty(self) -> bool:
         """
         TODO: Write your implementation
         """
-        pass
+        if self._root == None:
+            return True
+        return False
 
     def make_empty(self) -> None:
         """
         TODO: Write your implementation
         """
-        pass
+        self._root = None
+        return
 
 
 # ------------------- BASIC TESTING -----------------------------------------
